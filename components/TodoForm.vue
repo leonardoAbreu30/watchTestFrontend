@@ -1,15 +1,16 @@
 <template>
-  <form @submit.prevent="addTodo" class="mb-6">
+  <form @submit.prevent="handleSubmit" class="mb-6">
     <div class="flex gap-2">
       <input
-        v-model="newTodo"
+        v-model="text"
         type="text"
-        placeholder="New todo"
-        class="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Add a new todo..."
+        class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+        required
       />
       <button
         type="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
       >
         Add
       </button>
@@ -17,14 +18,19 @@
   </form>
 </template>
 
-<script setup>
-const newTodo = ref('')
-const todoStore = useTodoStore()
+<script setup lang="ts">
+import { ref } from 'vue';
 
-const addTodo = () => {
-  if (newTodo.value.trim()) {
-    todoStore.addTodo(newTodo.value)
-    newTodo.value = ''
+const emit = defineEmits<{
+  (e: 'add-todo', text: string): void
+}>();
+
+const text = ref('');
+
+const handleSubmit = () => {
+  if (text.value.trim()) {
+    emit('add-todo', text.value.trim());
+    text.value = '';
   }
-}
+};
 </script>
