@@ -6,3 +6,14 @@
     </main>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useAuthStore } from '~/stores/auth';
+
+const auth = useAuthStore();
+
+// Initialize authentication state when the app starts
+onMounted(() => {
+  auth.initAuth();
+});
+</script>
