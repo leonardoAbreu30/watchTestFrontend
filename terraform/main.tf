@@ -60,3 +60,9 @@ resource "aws_s3_bucket_public_access_block" "website" {
   ignore_public_acls      = false
   restrict_public_buckets = false
 }
+
+# Output the website URL
+output "website_url" {
+  description = "S3 static website URL"
+  value       = "http://${data.aws_s3_bucket.website.bucket}.s3-website-${var.aws_region}.amazonaws.com"
+}

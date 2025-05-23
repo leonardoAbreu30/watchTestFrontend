@@ -68,3 +68,9 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 sync .output/public/ s3://${{ env.S3_BUCKET }}/ --delete 
+
+      - name: Get Website URL
+        working-directory: ./terraform
+        run: |
+          echo "Website URL: $(terraform output -raw website_url)"
+          echo "✨ Frontend deployment complete! Your site is now live ✨" 
