@@ -11,6 +11,6 @@ variable "environment" {
 }
 
 variable "existing_bucket_name" {
-  description = "Name of the existing S3 bucket to use for hosting"
+  description = "terraform-bucket-watch-test-frontend"
   type        = string
 } 
