@@ -64,5 +64,5 @@ resource "aws_s3_bucket_public_access_block" "website" {
 # Output the website URL
 output "website_url" {
   description = "S3 static website URL"
-  value       = "http://${data.aws_s3_bucket.website.bucket}.s3-website-${var.aws_region}.amazonaws.com"
+  value       = aws_s3_bucket_website_configuration.website.website_endpoint
 }

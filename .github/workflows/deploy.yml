@@ -64,11 +64,10 @@ jobs:
           terraform apply -auto-approve \
             -var="environment=${{ env.ENVIRONMENT }}" \
             -var="existing_bucket_name=${{ env.S3_BUCKET }}"
-          echo "Website URL: $(terraform output -raw website_url)"
-          echo "✨ Infrastructure setup complete! ✨"
+          echo "✨ Infrastructure setup complete!"
+          echo "Website URL: http://$(terraform output -raw website_url)"
 
       - name: Deploy to S3
         run: |
           aws s3 sync .output/public/ s3://${{ env.S3_BUCKET }}/ --delete 
-          echo "✨ Frontend deployment complete! Your site is now live at:"
-          echo "http://${{ env.S3_BUCKET }}.s3-website-${{ env.AWS_REGION }}.amazonaws.com" 
+          echo "✨ Frontend deployment complete! ✨" 
