@@ -34,17 +34,17 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
   ],
 
-  // Throwing errors, will fix later
-  /* pinia: {
-    autoImports: ['defineStore', 'storeToRefs'],
-  }, */
-
-  devtools: { enabled: true },
-
   imports: {
     dirs: ['stores'],
   },
 
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:4000',
+    }
+  },
+
+  devtools: { enabled: true },
   compatibilityDate: '2025-05-15',
   css: ['~/assets/css/tailwind.css'],
 })
