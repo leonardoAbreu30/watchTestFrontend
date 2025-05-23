@@ -61,8 +61,46 @@ resource "aws_s3_bucket_public_access_block" "website" {
   restrict_public_buckets = false
 }
 
-# Output the website URL
-output "website_url" {
-  description = "S3 static website URL"
-  value       = aws_s3_bucket_website_configuration.website.website_endpoint
+# API Gateway
+resource "aws_apigatewayv2_api" "todo_api" {
+  name          = "todo-api-${var.environment}"
+  protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = [coalesce(var.cors_origin, "*")]
+    allow_methods = ["GET", "POST", "DELETE", "OPTIONS"]
+    allow_headers = ["Content-Type", "Authorization", "X-Amz-Date", "X-Api-Key", "X-Amz-Security-Token"]
+    max_age      = 300
+  }
+}
+
+resource "aws_apigatewayv2_stage" "todo_api" {
+  api_id = aws_apigatewayv2_api.todo_api.id
+  name   = var.environment
+  auto_deploy = true
+}
+
+resource "aws_apigatewayv2_integration" "todo_api" {
+  api_id           = aws_apigatewayv2_api.todo_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri  = aws_lambda_function.todo_app.invoke_arn
+}
+
+resource "aws_apigatewayv2_route" "todo_api" {
+  api_id    = aws_apigatewayv2_api.todo_api.id
+  route_key = "ANY /{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.todo_api.id}"
+}
+
+resource "aws_lambda_permission" "apigw" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.todo_app.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.todo_api.execution_arn}/*/*"
+}
+
+# Add these outputs at the end of the file
+output "api_endpoint" {
+  description = "API Gateway endpoint URL"
+  value       = "${aws_apigatewayv2_api.todo_api.api_endpoint}/${aws_apigatewayv2_stage.todo_api.name}"
 }
