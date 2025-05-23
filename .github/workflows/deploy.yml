@@ -10,6 +10,7 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   NUXT_PUBLIC_API_BASE: ${{ vars.API_BASE_URL }}
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
 
 jobs:
   deploy:
@@ -53,15 +54,17 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform plan \
-            -var="environment=${{ env.ENVIRONMENT }}"
+            -var="environment=${{ env.ENVIRONMENT }}" \
+            -var="existing_bucket_name=${{ env.S3_BUCKET }}"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         working-directory: ./terraform
         run: |
           terraform apply -auto-approve \
-            -var="environment=${{ env.ENVIRONMENT }}"
+            -var="environment=${{ env.ENVIRONMENT }}" \
+            -var="existing_bucket_name=${{ env.S3_BUCKET }}"
 
       - name: Deploy to S3
         run: |
-          aws s3 sync .output/public/ s3://todo-app-frontend-${{ env.ENVIRONMENT }}/ --delete 
+          aws s3 sync .output/public/ s3://${{ env.S3_BUCKET }}/ --delete 

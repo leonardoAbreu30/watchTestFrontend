@@ -8,4 +8,9 @@ variable "environment" {
   description = "Environment name (e.g., dev, prod)"
   type        = string
   default     = "dev"
+}
+
+variable "existing_bucket_name" {
+  description = "Name of the existing S3 bucket to use for hosting"
+  type        = string
 } 
