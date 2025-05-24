@@ -9,6 +9,23 @@ A modern todo web application built with Nuxt.js 3, Vue 3, and TailwindCSS. This
 - 🔐 Authentication system with Pinia state management
 - 📱 Fully responsive layout
 - 🛠 TypeScript support for better development experience
+- ☁️ Serverless architecture with AWS Lambda and S3
+- 🔄 Automated deployments via GitHub Actions
+- 🏗️ Infrastructure as Code using Terraform
+
+## Instructions for Use
+
+To use the Watch Test application:
+
+1. **Registration**: Create a new account by visiting the registration page and providing your email and password.
+2. **Login**: Once registered, log in to your account using your credentials.
+3. **Managing Todos**: After logging in, you can:
+   - Create new todos that will be associated with your account
+   - View all your existing todos
+   - Update the status of your todos
+   - Delete todos you no longer need
+
+Note: All todos are tied to your personal account, ensuring your data remains private and organized. You must be logged in to create, view, or manage your todos.
 
 ## Tech Stack
 
@@ -18,6 +35,11 @@ A modern todo web application built with Nuxt.js 3, Vue 3, and TailwindCSS. This
 - **Styling**: [TailwindCSS](https://tailwindcss.com/)
 - **Type Safety**: TypeScript
 - **Routing**: Vue Router (integrated with Nuxt)
+- **Cloud Infrastructure**: 
+  - AWS Lambda for serverless functions
+  - Amazon S3 for storage
+  - Terraform for infrastructure management
+- **CI/CD**: GitHub Actions
 
 ## Project Structure
 
@@ -133,3 +155,18 @@ For more detailed information about the technologies used:
 - [Vue.js Documentation](https://vuejs.org/guide/introduction.html)
 - [TailwindCSS Documentation](https://tailwindcss.com/docs)
 - [Pinia Documentation](https://pinia.vuejs.org/)
+
+## Infrastructure & Deployment
+
+This application uses a modern cloud-native architecture:
+
+- **Backend Services**: AWS Lambda functions handle the application's serverless backend
+- **Storage**: Amazon S3 buckets are used for data storage
+- **Infrastructure as Code**: All cloud resources are managed using Terraform, ensuring consistent and version-controlled infrastructure
+- **Continuous Deployment**: GitHub Actions automate the deployment process, providing:
+  - Automated testing
+  - Infrastructure provisioning
+  - Application deployment
+  - Environment management
+
+The infrastructure code and deployment configurations are maintained in the repository, following infrastructure as code best practices.
